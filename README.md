@@ -9,13 +9,13 @@ Features
 
 ✅ Classifies emails based on subject/content
 
-✅ Labels emails into categories (Important, General, Spam, etc.)
+✅ Labels emails into categories (Payment's, General, Social media etc.)
 
 ✅ Sends Telegram alerts for important emails
 
 ✅ Fully automated workflow, runs in the background
 
-✅ Easy to customize classification rules
+✅ Easy to customize classification rules using text classifier
 
 Tech Stack
 
@@ -25,7 +25,9 @@ n8n
 n8n
  – Workflow automation tool
 
-Email Node – Fetching incoming emails
+ Schedule trigger - execute every 5 minutes to trigger get gmail node
+
+Email Node – Fetching incoming emails which are unread
 
 Function/Code Node – Sends email content to Gemini model for classification
 
@@ -35,7 +37,7 @@ Telegram Node – Sends alerts for important emails
 
 Configure Credentials
 
-Email Node → Connect your Gmail/IMAP/SMTP account
+Email Node → Connect your Gmail account using google api credentials 
 
 Google Gemini API → Add your API key in n8n credentials
 

@@ -17,7 +17,7 @@ Features
 
 ✅ Easy to customize classification rules
 
-ech Stack
+Tech Stack
 
 n8n
  – Workflow automation tool

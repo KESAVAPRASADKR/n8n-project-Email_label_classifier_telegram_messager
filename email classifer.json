@@ -1,0 +1,625 @@
+{
+  "name": "email classifer",
+  "nodes": [
+    {
+      "parameters": {
+        "inputText": "=Subject:{{ $json.Subject }}\nmessage:{{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Payments / Bill",
+              "description": "Emails related to payment, billing, or financial transactions, including invoices, receipts, payment reminders, bills, outstanding balances, requests for payment, payment confirmations, failed payments, or any queries about charges and account statements. Typical emails may contain keywords like 'invoice', 'payment due', 'billing', 'payment receipt', 'amount due', 'transaction', 'refund', 'charge', or 'account balance'. Excludes unrelated notifications, marketing promotions, or support tickets not addressing payment or billing topics"
+            },
+            {
+              "category": "Job / Placement",
+              "description": "Emails related to job placements, employment opportunities, recruitment, internships, and notifications about new job openings, interview schedules, selection results, or referrals for available roles. Includes job alerts, application status updates, interview reminders, job offer letters, notifications about upcoming campus placements, and any communication from recruiters or companies regarding available positions. Typical messages contain keywords such as 'job opening', 'interview', 'placement', 'recruitment', 'job alert', 'internship', 'vacancy', 'hiring', or 'offer letter' or 'linkedin' . Excludes unrelated communications such as advertisements, general announcements, or billing notifications."
+            },
+            {
+              "category": "Social media",
+              "description": "Emails related to social media accounts, activity notifications, friend requests, comments, likes, follows, direct messages, mentions, account security alerts, privacy updates, group invitations, and any other communication from social networking services, platforms, or apps. Includes notifications or updates from platforms such as Facebook, Instagram, Twitter, LinkedIn, WhatsApp, Snapchat, YouTube, or similar services. Typical keywords may include 'friend request', 'like', 'comment', 'mention', 'follower', 'tag', 'post', 'message', 'group invite', or 'security alert'. Excludes unrelated marketing, transactional, or personal emails not involving social media interactions"
+            },
+            {
+              "category": "video call / online meeting",
+              "description": "Emails related to online meetings, virtual conference calls, webinars, scheduled video or audio meetings, and collaborative sessions. Includes invitations, meeting links, reminders, agenda details, updates, or recordings from platforms such as Zoom, Microsoft Teams, Google Meet, Webex, or similar services. Common keywords include 'meeting invitation', 'join meeting', 'Zoom link', 'Teams meeting', 'Webex', 'Google Meet', 'webinar', 'online session', 'calendar invite', 'conference call', or 'virtual meeting'. Excludes unrelated personal or marketing messages not associated with online meetings or appointments."
+            },
+            {
+              "category": "Promotion / offers",
+              "description": "Emails related to marketing promotions, special offers, discounts, sales events, limited-time deals, coupon codes, flash sales, exclusive promotions, personalized or seasonal discounts, product launch deals, and loyalty program rewards. Includes communication advertising price reductions, bundle offers, clearance sales, freebies, cashback, refer-a-friend incentives, or any content designed to drive purchases by offering savings or perks. Typical keywords may include 'discount', 'offer', 'promotion', 'sale', 'save', 'deal', 'coupon', 'exclusive', 'cashback', or 'limited time'. Excludes transactional receipts, account updates, or notifications unrelated to special pricing or promotional offers."
+            }
+          ]
+        },
+        "options": {
+          "multiClass": false,
+          "fallback": "other"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -384,
+        640
+      ],
+      "id": "fd9cde5a-cb0e-44cf-80aa-53c938dd2ff4",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -312,
+        992
+      ],
+      "id": "cc3f0c51-4686-4869-a718-a758d71e036d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "opSOmV9kFavgEtUT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_760732878467754835"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -128
+      ],
+      "id": "febaed2d-7ca4-4056-b9e6-ae1c3deb9e82",
+      "name": "Payment's",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1287786603577119600"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        256
+      ],
+      "id": "70b14945-51d1-4b93-b2dc-7dfe1a4d1908",
+      "name": "job",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1546491308",
+        "text": "=received a job alert mail \nSubject : {{ $json.Subject }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        448
+      ],
+      "id": "8b6f34ee-b5e7-43b8-97a8-d57bc29b5e08",
+      "name": "job's",
+      "webhookId": "b84a6d77-5fcc-41ed-be5f-c90281930c8e",
+      "credentials": {
+        "telegramApi": {
+          "id": "wOFyDrH6783nuzXa",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1084294958570796690"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        640
+      ],
+      "id": "2e969c69-bc53-466e-bd1a-f6853c9439bd",
+      "name": "social media",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_3774499523833979584"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        1024
+      ],
+      "id": "115f8251-4945-4848-a35d-34fb773642c6",
+      "name": "meeting's",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1546491308",
+        "text": "=received a online meeting mail\nSubject : {{ $json.Subject }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        832
+      ],
+      "id": "ec3b9930-1b42-484e-a335-76d3caa8d70c",
+      "name": "online meeting",
+      "webhookId": "b84a6d77-5fcc-41ed-be5f-c90281930c8e",
+      "credentials": {
+        "telegramApi": {
+          "id": "wOFyDrH6783nuzXa",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1546491308",
+        "text": "=received a mail regarding bill / payment  Subject : {{ $json.Subject }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        64
+      ],
+      "id": "b18f6294-48b4-4bc6-b316-2623672d74ff",
+      "name": "Payment",
+      "webhookId": "b84a6d77-5fcc-41ed-be5f-c90281930c8e",
+      "credentials": {
+        "telegramApi": {
+          "id": "wOFyDrH6783nuzXa",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_5129459985105006714"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        1216
+      ],
+      "id": "f278f955-0e68-4438-a45d-92e73f9fcac1",
+      "name": "offers / promotion",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_7683913755001364358"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        1408
+      ],
+      "id": "d0f6f11f-e085-4c66-9d44-6f5017751cf5",
+      "name": "others",
+      "webhookId": "8ba108de-d9ed-49ad-b1e3-33d05f417030",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        640
+      ],
+      "id": "c6e039b3-928c-4e30-8e48-8714cfdaf943",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "labelIds": [
+            "INBOX",
+            "IMPORTANT"
+          ],
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -608,
+        640
+      ],
+      "id": "f82b5ca9-10c2-4413-9def-9a56b50534c6",
+      "name": "Get many messages",
+      "webhookId": "c12ff5a8-6123-45b6-bc9b-444e5f26991d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        -128
+      ],
+      "id": "b7ed64c8-06f4-4118-99da-d761749ebf08",
+      "name": "Mark a message as read",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        256
+      ],
+      "id": "d4c13018-41ed-431d-bcc3-723a3790cdb5",
+      "name": "Mark a message as read1",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        640
+      ],
+      "id": "9e82ec7a-70b6-4e78-aa47-3908a38b7653",
+      "name": "Mark a message as read2",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        1024
+      ],
+      "id": "4bedfd7d-2155-4fc5-a042-09be0d3dc90e",
+      "name": "Mark a message as read3",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        1216
+      ],
+      "id": "d68af38b-2a5d-426f-a60a-7a9258b8dcf3",
+      "name": "Mark a message as read4",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        1408
+      ],
+      "id": "92f0b95d-c3a4-4cb3-a163-965d09ac1cb0",
+      "name": "Mark a message as read5",
+      "webhookId": "e9460dcc-2a74-4fd4-a14c-4c01a961f98c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2FXRcD4a6GrYVTWk",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Payment's",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Payment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "job",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "job's",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "social media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "meeting's",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "online meeting",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "offers / promotion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "others",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Payment's": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "job": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "social media": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "meeting's": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "offers / promotion": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "others": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Indian/Mahe",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "f6c2cedc-3cb2-4683-ac6a-e9b518255233",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c29f748a423c3b92b42fdc512e4f995828b31ad9f99ddb57bbb554d0e9687555"
+  },
+  "id": "NUFydPyXNfCTUT5u",
+  "tags": []
+}
